@@ -1,0 +1,92 @@
+
+31. Printing statistics.
+
+=== pochoco_soc ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      326 wires
+     2417 wire bits
+      124 public wires
+     1302 public wire bits
+       22 ports
+       28 port bits
+      329 cells
+        2   $add_30
+        1   $add_31
+        1   $add_4
+        2   $adff_1
+        1   $adff_2
+        2   $adff_3
+        2   $adff_32
+        4   $adffe_1
+        1   $adffe_2
+        1   $adffe_30
+       17   $adffe_32
+        3   $adffe_4
+        6   $adffe_8
+       34   $and_1
+        1   $and_32
+        1   $dffe_17
+        5   $eq_2
+        7   $eq_3
+        1   $eq_32
+       58   $eq_4
+        2   $eq_6
+        9   $eq_7
+        1   $logic_and_1
+        1   $logic_not_1
+        1   $logic_not_2
+        1   $logic_not_3
+        1   $logic_not_4
+        1   $logic_not_6
+        2   $lt_32
+        4   $mux_1
+        1   $mux_10
+        1   $mux_13
+        1   $mux_16
+        1   $mux_17
+        7   $mux_2
+        3   $mux_20
+        2   $mux_3
+        6   $mux_32
+        4   $mux_4
+        4   $mux_5
+        7   $mux_7
+        2   $mux_8
+        1   $ne_2
+        1   $neg_32
+       26   $not_1
+        2   $not_7
+        3   $or_1
+        1   $or_32
+        1   $pmux_1_6
+        1   $pmux_24_2
+        5   $pmux_2_2
+        1   $pmux_31_2
+        2   $pmux_32_15
+        3   $pmux_32_2
+        1   $pmux_32_5
+        1   $pmux_4_2
+        1   $pmux_4_3
+        1   $pmux_4_6
+        2   $pmux_4_7
+        1   $pmux_8_2
+       21   $reduce_and_2
+        1   $reduce_and_3
+        3   $reduce_bool_2
+        1   $reduce_bool_4
+        8   $reduce_or_2
+        1   $reduce_or_3
+        1   $reduce_or_4
+        1   $reduce_or_5
+        1   $reduce_or_7
+       14   $scopeinfo
+        2   $sdffce_1
+        1   $sdffce_10
+        1   $sdffce_3
+        1   $shl_4
+        1   $sub_32
+        1   $xor_32
+        4   gf180mcu_fd_ip_sram__sram64x8m8wm1
+

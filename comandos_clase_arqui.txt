@@ -1,0 +1,68 @@
+sudo apt-get install -y curl
+
+curl --proto '=https' --tlsv1.2 -fsSL https://artifacts.nixos.org/nix-installer | sh -s -- install --no-confirm --extra-conf "
+    extra-substituters = https://nix-cache.fossi-foundation.org
+    extra-trusted-public-keys = nix-cache.fossi-foundation.org:3+K59iFwXqKsL7BNu6Guy0v+uTlwsxYQxjspXzqLYQs=
+    extra-experimental-features = nix-command flakes
+"
+
+git clone https://github.com/librelane/librelane
+
+python3 -m pip install --user --upgrade --no-cache-dir ciel
+
+ciel enable f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7 --pdk-root ~/arqui_pochoco_soc/gf180mcu \
+     --pdk-family gf180mcuD --include-libraries all
+
+gedit env.sh
+
+export PDK_ROOT=${PDK_ROOT:-$HOME/arqui_pochoco_soc/gf180mcu}
+export PDK=gf180mcuD
+export SCL=gf180mcu_fd_sc_mcu7t5v0
+export SCLDIR=$PDK_ROOT/$PDK/libs.ref/$SCL
+export LIB=$SCLDIR/lib/${SCL}__tt_025C_5v00.lib
+export TLEF=$SCLDIR/techlef/${SCL}__nom.tlef
+export CLEF=$SCLDIR/lef/$SCL.lef
+export TOP=pochoco_soc
+export PERIOD_NS=${PERIOD_NS:-40}
+mkdir -p out reports
+
+source env.sh
+echo $LIB
+
+module fa (input a, b, cin, output s, cout);
+  assign s    = a ^ b ^ cin;
+  assign cout = (a & b) | (cin & (a ^ b));
+endmodule
+
+yosys
+yosys> read_verilog fa.v
+yosys> synth -top fa
+yosys> abc -liberty <LIB>
+yosys> clean
+yosys> stat -liberty <LIB>
+yosys> write_verilog -noattr fa.nl.v
+yosys> show
+
+tcl file:
+
+set lib $::env(LIB)
+
+yosys read_verilog fa.v              ;# 1. read the RTL
+yosys synth -top fa                  ;# 2. elaborate + optimize -> generic gates
+yosys abc -liberty $lib              ;# 3. map the gates to gf180 standard cells
+yosys clean                          ;# 4. remove leftovers
+yosys stat -liberty $lib             ;# 5. how many cells / how much area
+yosys write_verilog -noattr fa.nl.v  ;# 6. the netlist
+
+yosys -c manual/01_synth.tcl
+
+cd ~/arqui_pochoco_class
+nix-shell ~/librelane/shell.nix
+
+source scripts/env.sh
+yosys -C scripts/01_synth.tcl
+
+openroad -gui
+gui::show
+
+source scripts/steps/0
